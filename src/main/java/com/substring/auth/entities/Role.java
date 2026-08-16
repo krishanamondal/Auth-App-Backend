@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.substring.auth.entities;
 
 import jakarta.persistence.Column;
@@ -20,3 +21,27 @@ public class Role {
     @Column(nullable = false,unique = true)
     private String name ;
 }
+=======
+package com.substring.auth.entities;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.*;
+
+import java.util.UUID;
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+@Table(name = "roles")
+public class Role {
+    @Id
+    private UUID id = UUID.randomUUID();
+    @Column(nullable = false,unique = true)
+    private String name ;
+}
+>>>>>>> origin/resolve-refresh-cookie

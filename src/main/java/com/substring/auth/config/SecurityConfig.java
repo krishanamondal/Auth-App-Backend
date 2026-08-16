@@ -8,16 +8,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+<<<<<<< HEAD
+=======
+import org.springframework.http.HttpStatus;
+>>>>>>> origin/resolve-refresh-cookie
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+<<<<<<< HEAD
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+=======
+>>>>>>> origin/resolve-refresh-cookie
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+<<<<<<< HEAD
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -36,6 +44,23 @@ public class SecurityConfig {
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationSuccessHandler successHandler) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.successHandler = successHandler;
+=======
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.time.Instant;
+import java.util.Map;
+
+@Configuration
+public class SecurityConfig {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(SecurityConfig.class);
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+>>>>>>> origin/resolve-refresh-cookie
     }
 
     @Bean
@@ -44,11 +69,18 @@ public class SecurityConfig {
     }
 
     @Bean
+<<<<<<< HEAD
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+=======
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration configuration) throws Exception {
+
+>>>>>>> origin/resolve-refresh-cookie
         return configuration.getAuthenticationManager();
     }
 
     @Bean
+<<<<<<< HEAD
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(Customizer.withDefaults())
@@ -85,6 +117,69 @@ public class SecurityConfig {
                     response.getWriter().write(objectMapper.writeValueAsString(errorMap));
                 }))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+=======
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
+
+        http
+                .cors(Customizer.withDefaults())
+
+                .csrf(AbstractHttpConfigurer::disable)
+
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS))
+
+                .authorizeHttpRequests(auth ->
+                        auth
+                                .requestMatchers("/api/v1/auth/**")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated())
+
+                .exceptionHandling(exception ->
+                        exception.authenticationEntryPoint(
+                                (req, response, authException) -> {
+
+                                    logger.warn(
+                                            "Unauthorized access: {}",
+                                            authException.getMessage());
+                                    String message;
+ Object error = req.getAttribute("error");
+ if (error != null) {
+        message = error.toString();
+    } else {
+        message = "Unauthorized access";
+ }
+                                    response.setStatus(
+                                            HttpServletResponse.SC_UNAUTHORIZED);
+
+                                    response.setContentType("application/json");
+
+//                                    Map<String, String> errorMap = Map.of(
+//                                            "message",
+//                                            message,
+//                                            "status",
+//                                            "401",
+//                                            "error",
+//                                            "UNAUTHORIZED"
+//                                    );
+                                    Instant instant = Instant.now();
+                                    String time = instant.toString();
+var errorMap = ApiError.of(401, "Authorization Access ! ",message,req.getRequestURI(),time);
+                                    ObjectMapper objectMapper =
+                                            new ObjectMapper();
+
+                                    response.getWriter().write(
+                                            objectMapper.writeValueAsString(
+                                                    errorMap));
+                                }))
+
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
+>>>>>>> origin/resolve-refresh-cookie
 
         return http.build();
     }

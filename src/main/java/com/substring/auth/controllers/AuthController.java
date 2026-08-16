@@ -1,7 +1,10 @@
 package com.substring.auth.controllers;
 
 import com.substring.auth.dtos.AuthResponseDto;
+<<<<<<< HEAD
 import com.substring.auth.dtos.RefreshTokenRequest;
+=======
+>>>>>>> origin/resolve-refresh-cookie
 import com.substring.auth.dtos.UserDto;
 import com.substring.auth.entities.RefreshToken;
 import com.substring.auth.entities.User;
@@ -10,8 +13,11 @@ import com.substring.auth.repository.UserRepository;
 import com.substring.auth.security.CookieService;
 import com.substring.auth.security.JwtService;
 import com.substring.auth.services.AuthService;
+<<<<<<< HEAD
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+=======
+>>>>>>> origin/resolve-refresh-cookie
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -28,8 +34,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
+<<<<<<< HEAD
 import java.util.Arrays;
 import java.util.Optional;
+=======
+>>>>>>> origin/resolve-refresh-cookie
 import java.util.UUID;
 
 @RestController
@@ -74,6 +83,7 @@ public class AuthController {
         return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.email(), dto.password()));
     }
+<<<<<<< HEAD
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponseDto> refreshToken(
             @RequestBody(required = false) RefreshTokenRequest body, HttpServletResponse response, HttpServletRequest request
@@ -165,6 +175,9 @@ public class AuthController {
         }
         return Optional.empty();
     }
+=======
+
+>>>>>>> origin/resolve-refresh-cookie
     @PostMapping("/register")
     public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.registerUser(userDto));
