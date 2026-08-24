@@ -157,6 +157,7 @@
 						<goals>
 							<goal>testCompile</goal>
 						</goals>
+						// try new features 
 						<configuration>
 							<annotationProcessorPaths>
 								<path>
